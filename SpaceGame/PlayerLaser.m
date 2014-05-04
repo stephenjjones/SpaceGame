@@ -12,7 +12,7 @@
 
 - (instancetype)init {
     
-    if ((self = [super initWithImageNamed:@"laserbeam_blue" maxHp:1])) {
+    if ((self = [super initWithImageNamed:@"laserbeam_blue" maxHp:1 healthBarType:HealthBarTypeNone])) {
         [self setupCollisionBody];
     }
     return self;

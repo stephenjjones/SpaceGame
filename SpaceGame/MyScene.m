@@ -12,6 +12,9 @@
 #import "Asteroid.h"
 #import "PlayerLaser.h"
 #import "ParallaxNode.h"
+#import "Alien.h"
+#import "AlienLaser.h"
+#import "Powerup.h"
 
 @import CoreMotion;
 
@@ -59,8 +62,22 @@
     
     BOOL _okToRestart;
     
-    NSTimeInterval _timeSinceGameStarted;
-    NSTimeInterval _timeForGameWon;
+    //NSTimeInterval _timeSinceGameStarted;
+    //NSTimeInterval _timeForGameWon;
+    
+    SKLabelNode *_levelIntroLabel1;
+    SKLabelNode *_levelIntroLabel2;
+    
+    NSInteger _numAlienSpawns;
+    NSTimeInterval _timeSinceLastAlienSpawn;
+    NSTimeInterval _timeForNextAlienSpawn;
+    UIBezierPath *_alienPath;
+    SKShapeNode *_dd1;
+    SKShapeNode *_dd2;
+    SKShapeNode *_dd3;
+    
+    NSTimeInterval _timeSinceLastPowerup;
+    NSTimeInterval _timeForNextPowerup;
 
 }
 
@@ -270,10 +287,26 @@
 
 #pragma mark - Transitions
 
+- (void)nextStage
+{
+    [_levelManager nextStage];
+    [self newStageStarted];
+}
+
+- (void)newStageStarted
+{
+    if (_levelManager.gameState == GameStateDone) {
+        [self endScene:YES];
+    } else if ([_levelManager boolForProp:@"SpawnLevelIntro"]) {
+        [self doLevelIntro];
+    }
+}
+
 - (void)startSpawn
 {
-    _timeSinceGameStarted = 0;
-    _timeForGameWon = 30;
+    //_timeSinceGameStarted = 0;
+    //_timeForGameWon = 30;
+    [self nextStage];
     
     _levelManager.gameState = GameStatePlay;
     [self runAction:_soundPowerup];
@@ -344,6 +377,44 @@
     [restartLabel runAction:displayAndThrob];
 }
 
+- (void)doLevelIntro {
+    NSString *fontName = @"Avenir-Light";
+    NSString *message1 = [NSString stringWithFormat:@"Level %d", (int)_levelManager.curLevelIdx+1];
+    NSString *message2 = [_levelManager stringForProp:@"LText"];
+    
+    // Level Intro Label 1
+    _levelIntroLabel1 = [SKLabelNode labelNodeWithFontNamed:fontName];
+    [_levelIntroLabel1 setScale:0];
+    _levelIntroLabel1.text = message1;
+    _levelIntroLabel1.fontSize = [self fontSizeForDevice:48.0];
+    _levelIntroLabel1.fontColor = [SKColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
+    _levelIntroLabel1.position = CGPointMake(self.size.width/2, self.size.height * 0.6);
+    _levelIntroLabel1.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [_hudLayer addChild:_levelIntroLabel1];
+    
+    SKAction *scaleUpAction1 = [SKAction scaleTo:1 duration:0.5];
+    scaleUpAction1.timingMode = SKActionTimingEaseOut;
+    SKAction *delayAction1 = [SKAction waitForDuration:3.0];
+    SKAction *scaleDownAction1 = [SKAction scaleTo:0 duration:0.5];
+    scaleDownAction1.timingMode = SKActionTimingEaseOut;
+    SKAction *removeAction = [SKAction removeFromParent];
+    SKAction *scaleUpDown = [SKAction sequence:
+  @[scaleUpAction1, delayAction1, scaleDownAction1, removeAction]];
+    [_levelIntroLabel1 runAction:scaleUpDown];
+    
+    // Level Intro Label 2
+    _levelIntroLabel2 = [SKLabelNode labelNodeWithFontNamed:fontName];
+    [_levelIntroLabel2 setScale:0];
+    _levelIntroLabel2.text = message2;
+    _levelIntroLabel2.fontSize = [self fontSizeForDevice:48.0];
+    _levelIntroLabel2.fontColor = [SKColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
+    _levelIntroLabel2.position = CGPointMake(self.size.width/2, self.size.height * 0.4);
+    _levelIntroLabel2.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [_hudLayer addChild:_levelIntroLabel2];
+    
+    [_levelIntroLabel2 runAction:scaleUpDown];
+}
+
 
 - (void)spawnExplosionAtPosition:(CGPoint)position scale:(float)scale large:(BOOL)large
 {
@@ -390,10 +461,14 @@
     [self updatePlayer];
     [self updateAsteroids];
     
-    _timeSinceGameStarted += _deltaTime;
-    if (_timeSinceGameStarted > _timeForGameWon) {
-        [self endScene:YES];
-    }
+    //_timeSinceGameStarted += _deltaTime;
+    //if (_timeSinceGameStarted > _timeForGameWon) {
+    //    [self endScene:YES];
+    //}
+    [self updateLevel];
+    [self updateAliens];
+    [self updateChildren];
+    [self updatePowerups];
 
 }
 
@@ -437,9 +512,31 @@
     
 }
 
+- (void)updateLevel
+{
+    BOOL newStage = [_levelManager update];
+    if (newStage) {
+        [self newStageStarted];
+    }
+}
+
+- (void)updateChildren {
+    [_gameLayer.children enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[Entity class]]) {
+            Entity *entity = (Entity *)obj;
+            [entity update:_deltaTime];
+        }
+    }];
+}
+
 - (void)updateAsteroids {
-    NSTimeInterval const spawnSecsLow = 0.2;
-    NSTimeInterval const spawnSecsHigh = 1.0;
+    //NSTimeInterval const spawnSecsLow = 0.2;
+    //NSTimeInterval const spawnSecsHigh = 1.0;
+    if (![_levelManager boolForProp:@"SpawnAsteroids"]) return;
+    
+    float spawnSecsLow = [_levelManager floatForProp:@"ASpawnSecsLow"];
+    float spawnSecsHigh = [_levelManager floatForProp:@"ASpawnSecsHigh"];
+    
     
     _timeSinceLastAsteroidSpawn += _deltaTime;
     if (_timeSinceLastAsteroidSpawn > _timeForNextAsteroidSpawn) {
@@ -453,8 +550,10 @@
 
 - (void)spawnAsteroid
 {
-    CGFloat const moveDurationLow = 2.0;
-    CGFloat const moveDurationHigh = 10.0;
+    //CGFloat const moveDurationLow = 2.0;
+    //CGFloat const moveDurationHigh = 10.0;
+    float moveDurationLow = [_levelManager floatForProp:@"AMoveDurationLow"];
+    float moveDurationHigh = [_levelManager floatForProp:@"AMoveDurationHigh"];
     
     Asteroid *asteroid = [[Asteroid alloc] initWithAsteroidType:arc4random_uniform(NumAsteroidTypes)];
     asteroid.name = @"asteroid";
@@ -480,6 +579,19 @@
     [self runAction:_soundLaserShip];
 }
 
+- (void)spawnAlienLaserAtPosition:(CGPoint)position
+{
+    AlienLaser * laser = [[AlienLaser alloc] init];
+    laser.position = position;
+    [_gameLayer addChild:laser];
+    
+    SKAction *moveAction = [SKAction moveBy:CGVectorMake(-self.size.width, 0) duration:2.0];
+    SKAction *removeAction = [SKAction removeFromParent];
+    [laser runAction:[SKAction sequence:@[moveAction, removeAction]]];
+    
+    [self runAction:_soundLaserEnemy];
+}
+
 
 #pragma mark - Physics functions
 
@@ -501,6 +613,119 @@
     SKAction *action =
     [SKAction skt_screenShakeWithNode:_gameLayer amount:CGPointMake(0, 10.0) oscillations:oscillations duration:0.1*oscillations];
     [_gameLayer runAction:action];
+}
+
+#pragma mark - Aliens
+- (void)spawnAlien { // 1
+    if (_numAlienSpawns == 0) { // 2
+        CGPoint alienPosStart = CGPointMake(self.size.width * 1.3,
+                                            RandomFloatRange(self.size.height*0.9, self.size.height * 1.0));
+        // 3
+        CGPoint cp1 = CGPointMake(RandomFloatRange(-self.size.width * 0.1, self.size.width * 0.6),
+                                  RandomFloatRange(self.size.height * 0.7, self.size.height * 1.0));
+        // 4
+        CGPoint alienPosEnd = CGPointMake(self.size.width * 1.3,
+                                          RandomFloatRange(0, self.size.height * 0.1));
+        // 5
+        CGPoint cp2 = CGPointMake(RandomFloatRange(-self.size.width * 0.1, self.size.width * 0.6),
+                                  RandomFloatRange(0, self.size.height * 0.3));
+        // 6
+        _alienPath = [[UIBezierPath alloc] init];
+        [_alienPath moveToPoint:alienPosStart];
+        [_alienPath addCurveToPoint:alienPosEnd controlPoint1:cp1 controlPoint2:cp2];
+        // 7
+        _numAlienSpawns = RandomFloatRange(1, 20);
+        _timeForNextAlienSpawn = 1.0;
+        // 8
+        [_dd1 removeFromParent];
+        [_dd2 removeFromParent];
+        [_dd3 removeFromParent];
+        
+        _dd1 = [self attachDebugFrameFromPath:_alienPath.CGPath color:[SKColor greenColor]];
+        _dd2 = [self attachDebugFrameFromPoint:alienPosStart toPoint:cp1 color:[SKColor blueColor]];
+        _dd3 = [self attachDebugFrameFromPoint:alienPosEnd toPoint:cp2 color:[SKColor blueColor]];
+    } else {
+        // 9
+        _numAlienSpawns -= 1;
+        // 10
+        Alien *alien = [[Alien alloc] init];
+        alien.name = @"alien";
+        SKAction *pathAction = [SKAction followPath:_alienPath.CGPath asOffset:NO
+                                       orientToPath:NO duration:3.0];
+        SKAction *removeAction = [SKAction removeFromParent];
+        [alien runAction:[SKAction sequence:@[pathAction, removeAction]]];
+        [_gameLayer addChild:alien];
+    }
+}
+
+- (void)updateAliens
+{
+    if (![_levelManager boolForProp:@"SpawnAlienSwarm"]) return;
+    
+    _timeSinceLastAlienSpawn += _deltaTime;
+    if (_timeSinceLastAlienSpawn > _timeForNextAlienSpawn) {
+        _timeSinceLastAlienSpawn = 0;
+        _timeForNextAlienSpawn = 0.3;
+        [self spawnAlien];
+    }
+}
+
+#pragma mark - Powerups
+- (void)spawnPowerup
+{
+    Powerup *powerup = [[Powerup alloc] init];
+    powerup.position = CGPointMake(self.size.width, RandomFloatRange(0, self.size.height));
+    
+    SKAction *moveAction = [SKAction moveByX:-self.size.width*1.5 y:0 duration:5.0];
+    SKAction *removeAction = [SKAction removeFromParent];
+    [powerup runAction:[SKAction sequence:@[moveAction, removeAction]]];
+    [_gameLayer addChild:powerup];
+}
+
+- (void)updatePowerups
+{
+    if (![_levelManager boolForProp:@"SpawnPowerups"]) return;
+    
+    _timeSinceLastPowerup += _deltaTime;
+    if (_timeSinceLastPowerup > _timeForNextPowerup) {
+        _timeSinceLastPowerup = 0;
+        _timeForNextPowerup = [_levelManager floatForProp:@"PSpawnSecs"];
+        [self spawnPowerup];
+    }
+}
+
+- (void)applyPowerup
+{
+    [self runAction:_soundPowerup];
+    
+    SKEmitterNode *emitter = [SKEmitterNode skt_emitterNamed:@"Boost"];
+    emitter.zPosition = -1;
+    [_player addChild:emitter];
+    // 2
+    float const scaleDuration = 1.0;
+    float const waitDuration = 5.0;
+    // 3
+    _player.invincible = YES;
+    SKAction *moveForwardAction = [SKAction moveByX:self.size.width * 0.6 y:0 duration:scaleDuration];
+    SKAction *waitAction = [SKAction waitForDuration:waitDuration];
+    SKAction *moveBackAction = [moveForwardAction reversedAction];
+    SKAction *boostDoneAction = [SKAction runBlock:^{
+        _player.invincible = NO;
+        [emitter removeFromParent];
+    }];
+    
+    [_player runAction:[SKAction sequence:@[moveForwardAction, waitAction, moveBackAction, boostDoneAction]]];
+    // 4
+    float const scale = 0.75;
+    float const diffX = (_spacedust1.size.width - (_spacedust1.size.width * scale))/2;
+    float const diffY = (_spacedust1.size.height - (_spacedust1.size.height * scale))/2;
+    SKAction *moveOutAction = [SKAction moveByX:diffX y:diffY duration:scaleDuration];
+    SKAction *moveInAction = [moveOutAction reversedAction];
+    SKAction *scaleOutAction = [SKAction scaleTo:scale duration:scaleDuration];
+    SKAction *scaleInAction = [SKAction scaleTo:1.0 duration:scaleDuration];
+    SKAction *outAction = [SKAction group:@[moveOutAction, scaleOutAction]];
+    SKAction *inAction = [SKAction group:@[moveInAction, scaleInAction]];
+    [_gameLayer runAction:[SKAction sequence:@[outAction, waitAction, inAction]]];
 }
 
 @end

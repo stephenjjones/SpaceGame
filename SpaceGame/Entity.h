@@ -9,6 +9,12 @@
 #import <SpriteKit/SpriteKit.h>
 
 
+typedef NS_ENUM(NSInteger, HealthBarType) {
+    HealthBarTypeNone = 0,
+    HealthBarTypeGreen,
+    HealthBarTypeRed
+};
+
 typedef NS_OPTIONS(NSInteger, EntityCategory) {
     EntityCategoryPlayer    = 1 << 0,
     EntityCategoryAsteroid  = 1 << 1,
@@ -24,7 +30,9 @@ typedef NS_OPTIONS(NSInteger, EntityCategory) {
 @property (nonatomic, assign) NSInteger hp;
 @property (nonatomic, assign) NSInteger maxHp;
 
-- (instancetype)initWithImageNamed:(NSString *)name maxHp:(NSInteger)maxHp;
+@property (nonatomic, assign) HealthBarType healthBarType;
+
+- (instancetype)initWithImageNamed:(NSString *)name maxHp:(NSInteger)maxHp healthBarType:(HealthBarType)healthBarType;
 
 - (void)addLineToPoint:(CGPoint)point path:(CGMutablePathRef)path offset:(CGPoint)offset;
 - (void)moveToPoint:(CGPoint)point path:(CGMutablePathRef)path offset:(CGPoint)offset;
@@ -34,5 +42,7 @@ typedef NS_OPTIONS(NSInteger, EntityCategory) {
 - (void)takeHit;
 - (void)cleanup;
 - (void)destroy;
+
+- (void)update:(CFTimeInterval)deltaTime;
 
 @end

@@ -33,7 +33,7 @@
             break;
     }
     
-    if ((self = [super initWithImageNamed:@"asteroid" maxHp:maxHp])) {
+    if ((self = [super initWithImageNamed:@"asteroid" maxHp:maxHp healthBarType:HealthBarTypeRed])) {
         self.asteroidType = asteroidType;
         [self setupCollisionBody];
         [self setScale:scale];

@@ -19,4 +19,9 @@
 
 - (void)endScene:(BOOL)win;
 
+- (void)spawnAlienLaserAtPosition:(CGPoint)position;
+
+
+- (void)applyPowerup;
+
 @end

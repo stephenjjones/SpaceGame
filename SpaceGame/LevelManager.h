@@ -19,4 +19,12 @@ typedef NS_ENUM(NSInteger, GameState) {
 
 @property (assign) GameState gameState;
 
+- (NSInteger)curLevelIdx; - (void)nextStage;
+- (void)nextLevel;
+- (BOOL)update;
+- (float)floatForProp:(NSString *)prop;
+- (NSString *)stringForProp:(NSString *)prop;
+- (BOOL)boolForProp:(NSString *)prop;
+- (BOOL)hasProp:(NSString *)prop;
+
 @end

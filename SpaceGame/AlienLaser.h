@@ -1,5 +1,5 @@
 //
-//  Player.h
+//  AlienLaser.h
 //  SpaceGame
 //
 //  Created by Stephen Jones on 5/4/14.
@@ -8,8 +8,6 @@
 
 #import "Entity.h"
 
-@interface Player : Entity
-
-@property (assign) BOOL invincible;
+@interface AlienLaser : Entity
 
 @end

@@ -13,7 +13,7 @@
 
 - (instancetype)init
 {
-    if ((self = [super initWithImageNamed:@"SpaceFlier_sm_1" maxHp:10])) {
+    if ((self = [super initWithImageNamed:@"SpaceFlier_sm_1" maxHp:10 healthBarType:HealthBarTypeGreen])) {
         [self setupAnimation];
         [self setupCollisionBody];
     }
@@ -59,14 +59,20 @@
     // 2
     if (body.categoryBitMask & EntityCategoryAsteroid || body.categoryBitMask & EntityCategoryAlienLaser || body.categoryBitMask & EntityCategoryAlien) {
         [self contactWithObstacle:contact];
+    } else if (body.categoryBitMask & EntityCategoryPowerup) {
+        MyScene *scene = (MyScene *)self.scene;
+        [scene applyPowerup];
     }
 }
 
 - (void)contactWithObstacle:(SKPhysicsContact *)contact
 {
     MyScene *scene = (MyScene *)self.scene;
-    // 3
-    [self takeHit];
+    
+    if (!self.invincible) {
+        [self takeHit];
+    }
+    
     if ([self isDead]) {
         [scene spawnExplosionAtPosition:contact.contactPoint scale:1.0 large:YES];
         [scene endScene:NO];

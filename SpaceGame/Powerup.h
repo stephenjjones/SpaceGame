@@ -1,5 +1,5 @@
 //
-//  Player.h
+//  Powerup.h
 //  SpaceGame
 //
 //  Created by Stephen Jones on 5/4/14.
@@ -8,8 +8,6 @@
 
 #import "Entity.h"
 
-@interface Player : Entity
-
-@property (assign) BOOL invincible;
+@interface Powerup : Entity
 
 @end
