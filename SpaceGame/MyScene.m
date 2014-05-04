@@ -11,6 +11,7 @@
 #import "Player.h"
 #import "Asteroid.h"
 #import "PlayerLaser.h"
+#import "ParallaxNode.h"
 
 @import CoreMotion;
 
@@ -46,6 +47,21 @@
     
     NSTimeInterval _timeSinceLastAsteroidSpawn;
     NSTimeInterval _timeForNextAsteroidSpawn;
+    
+    // parallax nodes
+    ParallaxNode *_parallaxNode;
+    SKSpriteNode *_spacedust1;
+    SKSpriteNode *_spacedust2;
+    SKSpriteNode *_planetsunrise;
+    SKSpriteNode *_galaxy;
+    SKSpriteNode *_spatialanomaly;
+    SKSpriteNode *_spatialanomaly2;
+    
+    BOOL _okToRestart;
+    
+    NSTimeInterval _timeSinceGameStarted;
+    NSTimeInterval _timeForGameWon;
+
 }
 
 
@@ -63,6 +79,7 @@
         [self setupPlayer];
         [self setupMotionManager];
         [self setupPhysics];
+        [self setupBackground];
 
         
     }
@@ -180,6 +197,33 @@
     self.physicsWorld.gravity = CGVectorMake(0, 0);
 }
 
+- (void)setupBackground
+{
+    _spacedust1 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_front_spacedust"];
+    _spacedust1.position = CGPointMake(0, self.size.height/2);
+    _spacedust2 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_front_spacedust"];
+    _spacedust2.position = CGPointMake(_spacedust2.size.width, self.size.height/2);
+    _planetsunrise = [SKSpriteNode spriteNodeWithImageNamed:@"bg_planetsunrise"];
+    _planetsunrise.position = CGPointMake(600, 0);
+    _galaxy = [SKSpriteNode spriteNodeWithImageNamed:@"bg_galaxy"];
+    _galaxy.position = CGPointMake(0, self.size.height * 0.7);
+    _spatialanomaly = [SKSpriteNode spriteNodeWithImageNamed:@"bg_spacialanomaly"];
+    _spatialanomaly.position = CGPointMake(900, self.size.height * 0.3);
+    _spatialanomaly2 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_spacialanomaly2"];
+    _spatialanomaly2.position = CGPointMake(1500, self.size.height * 0.9);
+    
+    _parallaxNode = [[ParallaxNode alloc] initWithVelocity:CGPointMake(-100, 0)];
+    _parallaxNode.position = CGPointMake(0, 0);
+    [_parallaxNode addChild:_spacedust1 parallaxRatio:1];
+    [_parallaxNode addChild:_spacedust2 parallaxRatio:1];
+    [_parallaxNode addChild:_planetsunrise parallaxRatio:0.5];
+    [_parallaxNode addChild:_galaxy parallaxRatio:0.5];
+    [_parallaxNode addChild:_spatialanomaly parallaxRatio:0.5];
+    [_parallaxNode addChild:_spatialanomaly2 parallaxRatio:0.5];
+    _parallaxNode.zPosition = -1;
+    [_gameLayer addChild:_parallaxNode];
+}
+
 
 - (void)setupMotionManager
 {
@@ -209,6 +253,13 @@
         [self spawnPlayerLaser];
         return;
     }
+    
+    if (_levelManager.gameState == GameStateGameOver && _okToRestart) {
+        MyScene * myScene = [MyScene sceneWithSize:self.size];
+        SKTransition * reveal = [SKTransition flipHorizontalWithDuration:0.5];
+        [self.view presentScene:myScene transition:reveal];
+        return;
+    }
 }
 
 
@@ -221,6 +272,9 @@
 
 - (void)startSpawn
 {
+    _timeSinceGameStarted = 0;
+    _timeForGameWon = 30;
+    
     _levelManager.gameState = GameStatePlay;
     [self runAction:_soundPowerup];
     
@@ -244,6 +298,81 @@
     [_player runAction:[SKAction sequence:@[moveAction1, moveAction2]]];
 }
 
+- (void)endScene:(BOOL)win
+{
+    if (_levelManager.gameState == GameStateGameOver) return;
+    _levelManager.gameState = GameStateGameOver; NSString *fontName = @"Avenir-Light";
+    NSString *message; if (win) {
+        message = @"You win!";
+    } else {
+            message = @"You lose!";
+    }
+    
+    // Message Label
+    SKLabelNode *messageLabel = [SKLabelNode labelNodeWithFontNamed:fontName];
+    [messageLabel setScale:0];
+    messageLabel.text = message;
+    messageLabel.fontSize = [self fontSizeForDevice:96.0];
+    messageLabel.fontColor = [SKColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
+    messageLabel.position = CGPointMake(self.size.width/2, self.size.height * 0.6);
+    messageLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [_hudLayer addChild:messageLabel];
+    
+    SKAction *scaleAction = [SKAction scaleTo:1 duration:0.5];
+    scaleAction.timingMode = SKActionTimingEaseOut;
+    [messageLabel runAction:scaleAction];
+    
+    // Restart Label
+    SKLabelNode *restartLabel = [SKLabelNode labelNodeWithFontNamed:fontName];
+    [restartLabel setScale:0];
+    restartLabel.text = @"Tap to Restart";
+    restartLabel.fontSize = [self fontSizeForDevice:32.0];
+    restartLabel.fontColor = [SKColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
+    restartLabel.position = CGPointMake(self.size.width/2, self.size.height * 0.3);
+    restartLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [_hudLayer addChild:restartLabel];
+    
+    SKAction *waitAction = [SKAction waitForDuration:1.5];
+    SKAction *scaleUpAction = [SKAction scaleTo:1.1 duration:0.5];
+    scaleUpAction.timingMode = SKActionTimingEaseInEaseOut;
+    SKAction *scaleDownAction = [SKAction scaleTo:0.9 duration:0.5];
+    scaleDownAction.timingMode = SKActionTimingEaseInEaseOut;
+    SKAction *okToRestartAction = [SKAction runBlock:^{
+        _okToRestart = YES; }];
+    SKAction *throbAction = [SKAction repeatActionForever: [SKAction sequence:@[scaleUpAction, scaleDownAction]]];
+    SKAction *displayAndThrob = [SKAction sequence:@[waitAction, scaleAction, okToRestartAction, throbAction]];
+    [restartLabel runAction:displayAndThrob];
+}
+
+
+- (void)spawnExplosionAtPosition:(CGPoint)position scale:(float)scale large:(BOOL)large
+{
+    SKEmitterNode *emitter;
+    if (large) {
+        emitter = [NSKeyedUnarchiver unarchiveObjectWithFile:
+                   [[NSBundle mainBundle] pathForResource:@"Explosion" ofType:@"sks"]];
+    } else {
+        emitter = [NSKeyedUnarchiver unarchiveObjectWithFile:
+                       [[NSBundle mainBundle] pathForResource:@"SmallExplosion" ofType:@"sks"]];
+    }
+    emitter.position = position;
+    emitter.particleScale = scale;
+    emitter.numParticlesToEmit *= scale;
+    emitter.particleLifetime /=scale;
+    emitter.particlePositionRange = CGVectorMake(
+                                                 emitter.particlePositionRange.dx * scale,
+                                                 emitter.particlePositionRange.dy * scale);
+    [emitter runAction:[SKAction skt_removeFromParentAfterDelay:1.0]];
+    [_gameLayer addChild:emitter];
+    
+    if (large) {
+        [self runAction:_soundExplosionLarge];
+        [self shakeScreen:10*scale];
+    } else {
+        [self runAction:_soundExplosionSmall];
+    }
+}
+
 #pragma mark - Update methods
 
 -(void)update:(CFTimeInterval)currentTime {
@@ -254,10 +383,18 @@
     }
     _lastUpdateTime = currentTime;
     
+    [self updateBg];
+    
     if (_levelManager.gameState != GameStatePlay) return;
     
     [self updatePlayer];
     [self updateAsteroids];
+    
+    _timeSinceGameStarted += _deltaTime;
+    if (_timeSinceGameStarted > _timeForGameWon) {
+        [self endScene:YES];
+    }
+
 }
 
 - (void)updatePlayer
@@ -285,6 +422,19 @@
     CGFloat newY = _player.position.y + (playerPointsPerSecY * _deltaTime);
     newY = MIN(MAX(newY, minY), maxY);
     _player.position = CGPointMake(_player.position.x, newY);
+}
+
+- (void)updateBg {
+    [_parallaxNode update:_deltaTime];
+    
+    NSArray *bgs = @[_spacedust1, _spacedust2, _planetsunrise, _galaxy, _spatialanomaly, _spatialanomaly2];
+    for (SKSpriteNode *bg in bgs) {
+        CGPoint scenePos = [bg convertPoint:bg.position toNode:self]; // 3
+        if (scenePos.x < -bg.size.width) {
+            bg.position = CGPointAdd(bg.position, CGPointMake(_spacedust1.size.width*2, 0));
+        }
+    }
+    
 }
 
 - (void)updateAsteroids {
@@ -343,6 +493,14 @@
     node = contact.bodyB.node;
     if ([node isKindOfClass:[Entity class]]) {
         [(Entity*)node collidedWith:contact.bodyA contact:contact]; }
+}
+
+
+- (void)shakeScreen:(int)oscillations
+{
+    SKAction *action =
+    [SKAction skt_screenShakeWithNode:_gameLayer amount:CGPointMake(0, 10.0) oscillations:oscillations duration:0.1*oscillations];
+    [_gameLayer runAction:action];
 }
 
 @end

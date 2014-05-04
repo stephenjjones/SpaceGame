@@ -30,4 +30,9 @@ typedef NS_OPTIONS(NSInteger, EntityCategory) {
 - (void)moveToPoint:(CGPoint)point path:(CGMutablePathRef)path offset:(CGPoint)offset;
 - (void)collidedWith:(SKPhysicsBody *)body contact:(SKPhysicsContact*)contact;
 
+- (BOOL)isDead;
+- (void)takeHit;
+- (void)cleanup;
+- (void)destroy;
+
 @end

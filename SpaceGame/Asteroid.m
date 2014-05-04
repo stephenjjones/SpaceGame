@@ -69,10 +69,16 @@
 {
     if (body.categoryBitMask & EntityCategoryPlayerLaser) {
         Entity *other = (Entity *)body.node;
+        [other destroy];
+        [self takeHit];
+        
         MyScene *scene = (MyScene *)self.scene;
-        [scene playExplosionLargeSound];
-        [other removeFromParent];
-        [self removeFromParent];
+
+        if ([self isDead]) {
+            [scene spawnExplosionAtPosition:contact.contactPoint scale:self.xScale large:YES];
+        } else {
+            [scene spawnExplosionAtPosition:contact.contactPoint scale:self.xScale large:NO];
+        }
     }
 }
 

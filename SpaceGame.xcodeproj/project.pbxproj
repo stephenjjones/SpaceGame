@@ -12,6 +12,7 @@
 		22028EA4191686CD00711296 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA3191686CD00711296 /* Player.m */; };
 		22028EA719168B8700711296 /* Asteroid.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA619168B8700711296 /* Asteroid.m */; };
 		22028EAA19168DA700711296 /* PlayerLaser.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA919168DA700711296 /* PlayerLaser.m */; };
+		22028EAD1916A16500711296 /* ParallaxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EAC1916A16500711296 /* ParallaxNode.m */; };
 		221D83AF1915533E00177CA7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83AE1915533E00177CA7 /* Foundation.framework */; };
 		221D83B11915533E00177CA7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83B01915533E00177CA7 /* CoreGraphics.framework */; };
 		221D83B31915533E00177CA7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83B21915533E00177CA7 /* UIKit.framework */; };
@@ -132,6 +133,8 @@
 		22028EA619168B8700711296 /* Asteroid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Asteroid.m; sourceTree = "<group>"; };
 		22028EA819168DA700711296 /* PlayerLaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerLaser.h; sourceTree = "<group>"; };
 		22028EA919168DA700711296 /* PlayerLaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerLaser.m; sourceTree = "<group>"; };
+		22028EAB1916A16500711296 /* ParallaxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParallaxNode.h; sourceTree = "<group>"; };
+		22028EAC1916A16500711296 /* ParallaxNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParallaxNode.m; sourceTree = "<group>"; };
 		221D83AB1915533E00177CA7 /* SpaceGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		221D83AE1915533E00177CA7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		221D83B01915533E00177CA7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -324,6 +327,8 @@
 				22028EA919168DA700711296 /* PlayerLaser.m */,
 				22028EA519168B8700711296 /* Asteroid.h */,
 				22028EA619168B8700711296 /* Asteroid.m */,
+				22028EAB1916A16500711296 /* ParallaxNode.h */,
+				22028EAC1916A16500711296 /* ParallaxNode.m */,
 				221D83D01915533E00177CA7 /* Images.xcassets */,
 				221D83B71915533E00177CA7 /* Supporting Files */,
 			);
@@ -667,6 +672,7 @@
 				22028EA11916864100711296 /* Entity.m in Sources */,
 				221D83CD1915533E00177CA7 /* MyScene.m in Sources */,
 				221D849819167BC100177CA7 /* SKTEffects.m in Sources */,
+				22028EAD1916A16500711296 /* ParallaxNode.m in Sources */,
 				221D83CA1915533E00177CA7 /* ViewController.m in Sources */,
 				22028EA4191686CD00711296 /* Player.m in Sources */,
 				221D849419167BC100177CA7 /* SKEmitterNode+SKTExtras.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import "Player.h"
+#import "MyScene.h"
 
 @implementation Player
 
@@ -49,6 +50,29 @@
     self.physicsBody.collisionBitMask = 0;
     self.physicsBody.contactTestBitMask = EntityCategoryAsteroid |
         EntityCategoryAlienLaser | EntityCategoryPowerup | EntityCategoryAlien;
+}
+
+- (void)collidedWith:(SKPhysicsBody *)body contact:(SKPhysicsContact *)contact
+{
+    // 1
+    Entity * other = (Entity *)body.node; [other destroy];
+    // 2
+    if (body.categoryBitMask & EntityCategoryAsteroid || body.categoryBitMask & EntityCategoryAlienLaser || body.categoryBitMask & EntityCategoryAlien) {
+        [self contactWithObstacle:contact];
+    }
+}
+
+- (void)contactWithObstacle:(SKPhysicsContact *)contact
+{
+    MyScene *scene = (MyScene *)self.scene;
+    // 3
+    [self takeHit];
+    if ([self isDead]) {
+        [scene spawnExplosionAtPosition:contact.contactPoint scale:1.0 large:YES];
+        [scene endScene:NO];
+    } else {
+        [scene spawnExplosionAtPosition:contact.contactPoint scale:0.5 large:YES];
+    }
 }
 
 @end

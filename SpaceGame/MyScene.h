@@ -15,5 +15,8 @@
 @property (strong) Player *player;
 
 - (void)playExplosionLargeSound;
+- (void)spawnExplosionAtPosition:(CGPoint)position scale:(float)scale large:(BOOL)large;
+
+- (void)endScene:(BOOL)win;
 
 @end

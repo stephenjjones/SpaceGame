@@ -41,4 +41,37 @@
 // ovveride in subclasses for specific behavior
 }
 
+- (BOOL)isDead
+{
+    return _hp <= 0;
+}
+
+- (void)takeHit
+{
+    if (_hp > 0) {
+        _hp--;
+    }
+    
+    if ([self isDead]) {
+        [self destroy];
+    }
+}
+
+- (void)cleanup {
+    [self removeFromParent];
+}
+
+- (void)destroy
+{
+    _hp = 0;
+    self.physicsBody = nil;
+    [self removeAllActions];
+    [self runAction:
+        [SKAction sequence:@[
+                             [SKAction fadeAlphaTo:0 duration:0.2],
+                             [SKAction performSelector:@selector(cleanup) onTarget:self]
+                            ]]
+     ];
+}
+
 @end

@@ -9,7 +9,7 @@
 #import "SKNode+DebugDraw.h"
 
 //disable debug drawing by setting this to NO
-static BOOL kDebugDraw = YES;
+static BOOL kDebugDraw = NO;
 
 @implementation SKNode (DebugDraw)
 
