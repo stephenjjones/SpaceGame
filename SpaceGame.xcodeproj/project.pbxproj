@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22028E9E1916847200711296 /* LevelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028E9D1916847200711296 /* LevelManager.m */; };
+		22028EA11916864100711296 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA01916864100711296 /* Entity.m */; };
+		22028EA4191686CD00711296 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA3191686CD00711296 /* Player.m */; };
+		22028EA719168B8700711296 /* Asteroid.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA619168B8700711296 /* Asteroid.m */; };
+		22028EAA19168DA700711296 /* PlayerLaser.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EA919168DA700711296 /* PlayerLaser.m */; };
 		221D83AF1915533E00177CA7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83AE1915533E00177CA7 /* Foundation.framework */; };
 		221D83B11915533E00177CA7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83B01915533E00177CA7 /* CoreGraphics.framework */; };
 		221D83B31915533E00177CA7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83B21915533E00177CA7 /* UIKit.framework */; };
@@ -18,7 +23,6 @@
 		221D83C71915533E00177CA7 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 221D83C51915533E00177CA7 /* Main_iPad.storyboard */; };
 		221D83CA1915533E00177CA7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 221D83C91915533E00177CA7 /* ViewController.m */; };
 		221D83CD1915533E00177CA7 /* MyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 221D83CC1915533E00177CA7 /* MyScene.m */; };
-		221D83CF1915533E00177CA7 /* Spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = 221D83CE1915533E00177CA7 /* Spaceship.png */; };
 		221D83D11915533E00177CA7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 221D83D01915533E00177CA7 /* Images.xcassets */; };
 		221D83D81915533E00177CA7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83D71915533E00177CA7 /* XCTest.framework */; };
 		221D83D91915533E00177CA7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83AE1915533E00177CA7 /* Foundation.framework */; };
@@ -118,6 +122,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22028E9C1916847200711296 /* LevelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelManager.h; sourceTree = "<group>"; };
+		22028E9D1916847200711296 /* LevelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelManager.m; sourceTree = "<group>"; };
+		22028E9F1916864100711296 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		22028EA01916864100711296 /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Entity.m; sourceTree = "<group>"; };
+		22028EA2191686CD00711296 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		22028EA3191686CD00711296 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		22028EA519168B8700711296 /* Asteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asteroid.h; sourceTree = "<group>"; };
+		22028EA619168B8700711296 /* Asteroid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Asteroid.m; sourceTree = "<group>"; };
+		22028EA819168DA700711296 /* PlayerLaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerLaser.h; sourceTree = "<group>"; };
+		22028EA919168DA700711296 /* PlayerLaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerLaser.m; sourceTree = "<group>"; };
 		221D83AB1915533E00177CA7 /* SpaceGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		221D83AE1915533E00177CA7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		221D83B01915533E00177CA7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -135,7 +149,6 @@
 		221D83C91915533E00177CA7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		221D83CB1915533E00177CA7 /* MyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyScene.h; sourceTree = "<group>"; };
 		221D83CC1915533E00177CA7 /* MyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyScene.m; sourceTree = "<group>"; };
-		221D83CE1915533E00177CA7 /* Spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spaceship.png; sourceTree = "<group>"; };
 		221D83D01915533E00177CA7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		221D83D61915533E00177CA7 /* SpaceGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpaceGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		221D83D71915533E00177CA7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -301,7 +314,16 @@
 				221D83C91915533E00177CA7 /* ViewController.m */,
 				221D83CB1915533E00177CA7 /* MyScene.h */,
 				221D83CC1915533E00177CA7 /* MyScene.m */,
-				221D83CE1915533E00177CA7 /* Spaceship.png */,
+				22028E9C1916847200711296 /* LevelManager.h */,
+				22028E9D1916847200711296 /* LevelManager.m */,
+				22028E9F1916864100711296 /* Entity.h */,
+				22028EA01916864100711296 /* Entity.m */,
+				22028EA2191686CD00711296 /* Player.h */,
+				22028EA3191686CD00711296 /* Player.m */,
+				22028EA819168DA700711296 /* PlayerLaser.h */,
+				22028EA919168DA700711296 /* PlayerLaser.m */,
+				22028EA519168B8700711296 /* Asteroid.h */,
+				22028EA619168B8700711296 /* Asteroid.m */,
 				221D83D01915533E00177CA7 /* Images.xcassets */,
 				221D83B71915533E00177CA7 /* Supporting Files */,
 			);
@@ -552,7 +574,6 @@
 				221D847119167BA200177CA7 /* star3@2x.png in Resources */,
 				221D848019167BA200177CA7 /* title.caf in Resources */,
 				221D845519167BA200177CA7 /* Icon-29@2x.png in Resources */,
-				221D83CF1915533E00177CA7 /* Spaceship.png in Resources */,
 				221D843B19167BA200177CA7 /* bg_front_spacedust@2x.png in Resources */,
 				221D845F19167BA200177CA7 /* Icon-76.png in Resources */,
 				221D847419167BA200177CA7 /* Stars1.sks in Resources */,
@@ -642,15 +663,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22028EA719168B8700711296 /* Asteroid.m in Sources */,
+				22028EA11916864100711296 /* Entity.m in Sources */,
 				221D83CD1915533E00177CA7 /* MyScene.m in Sources */,
 				221D849819167BC100177CA7 /* SKTEffects.m in Sources */,
 				221D83CA1915533E00177CA7 /* ViewController.m in Sources */,
+				22028EA4191686CD00711296 /* Player.m in Sources */,
 				221D849419167BC100177CA7 /* SKEmitterNode+SKTExtras.m in Sources */,
+				22028EAA19168DA700711296 /* PlayerLaser.m in Sources */,
 				221D849319167BC100177CA7 /* SKAction+SKTExtras.m in Sources */,
 				221D849919167BC100177CA7 /* SKTTimingFunctions.m in Sources */,
 				221D849719167BC100177CA7 /* SKTAudio.m in Sources */,
 				221D83C11915533E00177CA7 /* AppDelegate.m in Sources */,
 				221D849619167BC100177CA7 /* SKNode+SKTExtras.m in Sources */,
+				22028E9E1916847200711296 /* LevelManager.m in Sources */,
 				221D83BD1915533E00177CA7 /* main.m in Sources */,
 				221D849A19167BC100177CA7 /* SKTUtils.mm in Sources */,
 				221D849519167BC100177CA7 /* SKNode+DebugDraw.m in Sources */,
@@ -874,6 +900,7 @@
 				221D83E91915533E00177CA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		221D83EA1915533E00177CA7 /* Build configuration list for PBXNativeTarget "SpaceGameTests" */ = {
 			isa = XCConfigurationList;
@@ -882,6 +909,7 @@
 				221D83EC1915533E00177CA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

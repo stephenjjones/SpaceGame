@@ -8,6 +8,12 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+@class Player;
+
 @interface MyScene : SKScene
+
+@property (strong) Player *player;
+
+- (void)playExplosionLargeSound;
 
 @end
