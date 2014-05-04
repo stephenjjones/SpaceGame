@@ -14,3 +14,11 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+//custom imports
+#import "SKTUtils.h"
+#import "SKTAudio.h"
+#import "SKNode+DebugDraw.h"
+#import "SKAction+SKTExtras.h"
+#import "SKTEffects.h"
+#import "SKEmitterNode+SKTExtras.h"
