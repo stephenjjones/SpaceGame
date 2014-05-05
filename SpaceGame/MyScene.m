@@ -15,6 +15,9 @@
 #import "Alien.h"
 #import "AlienLaser.h"
 #import "Powerup.h"
+#import "Boss.h"
+#import "CannonBall.h"
+
 
 @import CoreMotion;
 
@@ -78,6 +81,8 @@
     
     NSTimeInterval _timeSinceLastPowerup;
     NSTimeInterval _timeForNextPowerup;
+    
+    Boss *_boss;
 
 }
 
@@ -127,7 +132,7 @@
     
     // Title label 2
     _titleLabel2 = [SKLabelNode labelNodeWithFontNamed:fontName];
-    _titleLabel2.text = @"Starter Kit";
+    _titleLabel2.text = @"Asteroid";
     _titleLabel2.fontSize = [self fontSizeForDevice:96.0];
     _titleLabel2.fontColor = [SKColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
     _titleLabel2.position = CGPointMake(self.size.width/2, self.size.height * 0.6);
@@ -138,7 +143,7 @@
     SKAction *waitAction1 = [SKAction waitForDuration:1.0];
     SKAction *scaleAction1 = [SKAction scaleTo:1 duration:0.5];
     scaleAction1.timingMode = SKActionTimingEaseOut;
-    [_titleLabel1 runAction:[SKAction sequence:@[waitAction1, _soundTitle, scaleAction1]]];
+    [_titleLabel1 runAction:[SKAction sequence:@[waitAction1, scaleAction1]]];
     
     [_titleLabel2 setScale:0];
     SKAction *waitAction2 = [SKAction waitForDuration:2.0];
@@ -299,6 +304,8 @@
         [self endScene:YES];
     } else if ([_levelManager boolForProp:@"SpawnLevelIntro"]) {
         [self doLevelIntro];
+    } else if ([_levelManager hasProp:@"SpawnBoss"]) {
+        [self spawnBoss];
     }
 }
 
@@ -726,6 +733,35 @@
     SKAction *outAction = [SKAction group:@[moveOutAction, scaleOutAction]];
     SKAction *inAction = [SKAction group:@[moveInAction, scaleInAction]];
     [_gameLayer runAction:[SKAction sequence:@[outAction, waitAction, inAction]]];
+}
+
+
+#pragma mark - Boss
+- (void)spawnBoss
+{
+    _boss = [[Boss alloc] init];
+    _boss.position = CGPointMake(self.size.width * 1.2, self.size.height * 1.2);
+    [_gameLayer addChild:_boss];
+    [self shakeScreen:100];
+    [self runAction:_soundBoss];
+}
+
+
+- (void)shootCannonBallAtPlayerFromPosition:(CGPoint)position
+{
+    CannonBall *cannonBall = [[CannonBall alloc] init];
+    cannonBall.position = position;
+    [_gameLayer addChild:cannonBall];
+    
+    CGPoint offset = CGPointSubtract(_player.position, cannonBall.position);
+    CGPoint shootVector = CGPointNormalize(offset);
+    CGPoint shootTarget = CGPointMultiplyScalar(shootVector, self.size.width * 2);
+    [cannonBall runAction:[SKAction sequence:@[
+                                               [SKAction moveByX:shootTarget.x y:shootTarget.y duration:5.0],
+                                               [SKAction removeFromParent]
+                                               ]
+                           ]
+     ];
 }
 
 @end

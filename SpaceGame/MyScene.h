@@ -21,7 +21,10 @@
 
 - (void)spawnAlienLaserAtPosition:(CGPoint)position;
 
-
 - (void)applyPowerup;
+
+- (void)nextStage;
+
+- (void)shootCannonBallAtPlayerFromPosition:(CGPoint)position;
 
 @end

@@ -17,6 +17,8 @@
 		22028EB61916B16800711296 /* Alien.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EB51916B16800711296 /* Alien.m */; };
 		22028EB91916B43300711296 /* AlienLaser.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EB81916B43300711296 /* AlienLaser.m */; };
 		22028EBC1916B56F00711296 /* Powerup.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EBB1916B56F00711296 /* Powerup.m */; };
+		22028EBF1916EB5D00711296 /* Boss.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EBE1916EB5D00711296 /* Boss.m */; };
+		22028EC21916EE8000711296 /* CannonBall.m in Sources */ = {isa = PBXBuildFile; fileRef = 22028EC11916EE7F00711296 /* CannonBall.m */; };
 		221D83AF1915533E00177CA7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83AE1915533E00177CA7 /* Foundation.framework */; };
 		221D83B11915533E00177CA7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83B01915533E00177CA7 /* CoreGraphics.framework */; };
 		221D83B31915533E00177CA7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D83B21915533E00177CA7 /* UIKit.framework */; };
@@ -146,6 +148,10 @@
 		22028EB81916B43300711296 /* AlienLaser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlienLaser.m; sourceTree = "<group>"; };
 		22028EBA1916B56F00711296 /* Powerup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Powerup.h; sourceTree = "<group>"; };
 		22028EBB1916B56F00711296 /* Powerup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Powerup.m; sourceTree = "<group>"; };
+		22028EBD1916EB5D00711296 /* Boss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boss.h; sourceTree = "<group>"; };
+		22028EBE1916EB5D00711296 /* Boss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Boss.m; sourceTree = "<group>"; };
+		22028EC01916EE7F00711296 /* CannonBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CannonBall.h; sourceTree = "<group>"; };
+		22028EC11916EE7F00711296 /* CannonBall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CannonBall.m; sourceTree = "<group>"; };
 		221D83AB1915533E00177CA7 /* SpaceGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		221D83AE1915533E00177CA7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		221D83B01915533E00177CA7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -344,6 +350,10 @@
 				22028EB81916B43300711296 /* AlienLaser.m */,
 				22028EBA1916B56F00711296 /* Powerup.h */,
 				22028EBB1916B56F00711296 /* Powerup.m */,
+				22028EBD1916EB5D00711296 /* Boss.h */,
+				22028EBE1916EB5D00711296 /* Boss.m */,
+				22028EC01916EE7F00711296 /* CannonBall.h */,
+				22028EC11916EE7F00711296 /* CannonBall.m */,
 				22028EAB1916A16500711296 /* ParallaxNode.h */,
 				22028EAC1916A16500711296 /* ParallaxNode.m */,
 				22028EB21916B14A00711296 /* Levels.plist */,
@@ -703,11 +713,13 @@
 				221D849719167BC100177CA7 /* SKTAudio.m in Sources */,
 				221D83C11915533E00177CA7 /* AppDelegate.m in Sources */,
 				221D849619167BC100177CA7 /* SKNode+SKTExtras.m in Sources */,
+				22028EBF1916EB5D00711296 /* Boss.m in Sources */,
 				22028E9E1916847200711296 /* LevelManager.m in Sources */,
 				221D83BD1915533E00177CA7 /* main.m in Sources */,
 				221D849A19167BC100177CA7 /* SKTUtils.mm in Sources */,
 				22028EB61916B16800711296 /* Alien.m in Sources */,
 				221D849519167BC100177CA7 /* SKNode+DebugDraw.m in Sources */,
+				22028EC21916EE8000711296 /* CannonBall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
